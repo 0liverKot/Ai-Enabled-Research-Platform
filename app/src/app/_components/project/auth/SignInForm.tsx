@@ -61,7 +61,7 @@ const SignInForm = ({className}: SignInFormProps) => {
                 
                 <span className={`${passwordError ? "visible" : "invisible"} text-sm text-red-500 mb-10`}>{passwordError ?? "No error message"}</span>
 
-                <input className="border-none bg-accent-main rounded-md w-1/2 m-auto h-10 text-text-accent-secondary hover:scale-105" type="submit"/>
+                <button className="border-none bg-accent-main rounded-md w-1/2 m-auto h-10 text-text-accent-secondary hover:scale-105" type="submit">Sign In</button>
             </form>
 
         </div>
