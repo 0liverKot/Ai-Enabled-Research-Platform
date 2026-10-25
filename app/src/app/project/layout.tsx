@@ -1,8 +1,12 @@
 import ProjectsMainSideBar from "../_components/project/ProjectsMainSideBar"
 
+type ProjectLayoutProps = {
+    children: React.ReactNode
+}
+
 const ProjectLayout = (
     {children,} : 
-    {children: React.ReactNode}
+    ProjectLayoutProps
     ) => {
         return (
             <div className="flex min-h-screen">
