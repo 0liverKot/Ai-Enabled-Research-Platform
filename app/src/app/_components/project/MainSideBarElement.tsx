@@ -1,16 +1,13 @@
-"use client"
+"use client";
 
-const MainSideBarElement = ({img, link}: {img: string, link: string}) => {
-    
+const MainSideBarElement = ({ img, link }: { img: string; link: string }) => {
     return (
         <>
-        <button className="flex justify-center items-center h-20 w-20 border-none rounded-sm hover:bg-accent-secondary hover:scale-110 shadow-md">
-            <img className="h-10 w-10 shrink-0 object-contain" src={img}/>
-        </button>
-           
-
+            <button className="hover:bg-accent-secondary flex h-20 w-20 items-center justify-center rounded-sm border-none shadow-md hover:scale-110">
+                <img className="h-10 w-10 shrink-0 object-contain" src={img} />
+            </button>
         </>
-    )
-}
+    );
+};
 
-export default MainSideBarElement
+export default MainSideBarElement;

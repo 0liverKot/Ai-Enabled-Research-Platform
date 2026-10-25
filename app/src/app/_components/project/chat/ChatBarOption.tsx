@@ -1,15 +1,15 @@
-"use-client"
+"use-client";
 
 type ChatBarOptionProps = {
-    label: string
-}
+    label: string;
+};
 
-const ChatBarOption = ({
-    label
-}: ChatBarOptionProps) => {
+const ChatBarOption = ({ label }: ChatBarOptionProps) => {
     return (
-        <button className="hover:bg-primary-tertiary border-none rounded-sm w-full text-left pl-1">{label}</button>
-    )
-}
+        <button className="hover:bg-primary-tertiary w-full rounded-sm border-none pl-1 text-left">
+            {label}
+        </button>
+    );
+};
 
-export default ChatBarOption
+export default ChatBarOption;

@@ -22,13 +22,13 @@ const ExpandableList = ({
     return (
         <section className={className}>
             <button
-            type="button"
-            aria-expanded={expanded}
-            className="flex w-full items-center justify-between rounded px-2 py-1 text-left hover:bg-black/10"
-            onClick={() => setExpanded((isExpanded) => !isExpanded)}
+                type="button"
+                aria-expanded={expanded}
+                className="flex w-full items-center justify-between rounded px-2 py-1 text-left hover:bg-black/10"
+                onClick={() => setExpanded((isExpanded) => !isExpanded)}
             >
-            <span>{label}</span>
-            <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+                <span>{label}</span>
+                <span aria-hidden="true">{expanded ? "−" : "+"}</span>
             </button>
 
             {expanded && (
@@ -39,7 +39,7 @@ const ExpandableList = ({
                 </ul>
             )}
         </section>
-        );
-    };
+    );
+};
 
 export default ExpandableList;
