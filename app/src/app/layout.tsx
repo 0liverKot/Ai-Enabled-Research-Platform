@@ -21,7 +21,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
 
     return (
-        <html lang="en" className={`${geist.variable}`}>
+        <html lang="en" className={`${geist.variable} text-text-main`} >
             <body>
                 <TRPCReactProvider>{children}</TRPCReactProvider>
             </body>
