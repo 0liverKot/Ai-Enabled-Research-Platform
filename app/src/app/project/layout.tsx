@@ -1,13 +1,13 @@
-import ProjectsMainSideBar from "../_components/ProjectsMainSideBar"
+import ProjectsMainSideBar from "../_components/project/ProjectsMainSideBar"
 
 const ProjectLayout = (
     {children,} : 
     {children: React.ReactNode}
     ) => {
         return (
-            <div className="flex">
+            <div className="flex min-h-screen">
                 <ProjectsMainSideBar/>
-                <main>{children}</main>
+                <main className="flex-1">{children}</main>
             </div>
         )
     }
