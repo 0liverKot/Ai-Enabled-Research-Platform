@@ -6,9 +6,9 @@ type ProjectLayoutProps = {
 
 const ProjectLayout = ({ children }: ProjectLayoutProps) => {
     return (
-        <div className="flex min-h-screen">
+        <div className="flex h-screen overflow-hidden">
             <ProjectsMainSideBar />
-            <main className="flex-1">{children}</main>
+            <main className="min-h-0 min-w-0 flex-1">{children}</main>
         </div>
     );
 };
