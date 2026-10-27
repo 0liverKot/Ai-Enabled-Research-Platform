@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { redirect } from "next/navigation"
+import { useEffect, useState } from "react"
 import { authClient } from "~/server/better-auth/client"
 
 type SignInFormProps = {
@@ -15,17 +16,24 @@ type SignInErrors = {
 const SignInForm = ({className}: SignInFormProps) => {
 
     const [errors, setErrors] = useState<SignInErrors>({email: null, password: null})
+    const [formError, setFormError] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (formError) {
+            alert(formError)
+        }
+    }, [formError])
 
     const submitSignInForm = async (e: React.SubmitEvent) => {
         
         e.preventDefault()
         const formData = new FormData(e.target)
         const email = formData.get("email") as string
-        const password = formData.get("passowrd") as string
+        const password = formData.get("password") as string
 
         const newErrors = {
             email: !email ? "Please enter your email address" : null,
-            password: !email ? "Please enter your password" : null
+            password: !password ? "Please enter your password" : null
         }
         
         setErrors(newErrors)
@@ -34,12 +42,22 @@ const SignInForm = ({className}: SignInFormProps) => {
             return 
         }
 
-        await authClient.signIn.email({
+        const {data, error} = await authClient.signIn.email({
             email,
             password
         })
-    }
 
+        if (error) {
+            // 422 corresponds with validation issues
+            if (error.status === 400) {
+                setFormError(error.message!)
+            } else {
+                setFormError("Something went wrong. Please try again")
+            }
+        } else {
+            redirect("/project/chat")
+        }
+    }
 
     return ( 
 
@@ -48,15 +66,15 @@ const SignInForm = ({className}: SignInFormProps) => {
                 <label htmlFor="email" >Email Address:</label>
                 <div className="flex flex-row bg-primary-main border-2">
                     <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/email.png" />
-                    <input type="text" id="email" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
+                    <input type="text" id="email" name="email" className="w-full focus:outline-none border-s-2 pl-2"/>
                 </div>
                 
-                <span className={`${errors.password ? "visible" : "invisible"} text-sm text-red-500 mb-10`}>{errors.password ?? "No error message"}</span>
+                <span className={`${errors.email ? "visible" : "invisible"} text-sm text-red-500 mb-10`}>{errors.email ?? "No error message"}</span>
 
                 <label htmlFor="password">Password:</label>
                 <div className="flex flex-row bg-primary-main border-2">
                     <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/padlock.png" />
-                    <input type="text" id="password" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
+                    <input type="password" id="password" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
                 </div>
                 
                 <span className={`${errors.password ? "visible" : "invisible"} text-sm text-red-500 mb-10`}>{errors.password ?? "No error message"}</span>

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { redirect } from "next/navigation"
+import { useEffect, useState } from "react"
 import { authClient } from "~/server/better-auth/client"
 
 type SignUpFormProps = {
@@ -15,7 +16,14 @@ type SignUpErrors = {
 
 const SignUpForm = ({className}: SignUpFormProps) => {
     
-    const [errors, setErrors] = useState<SignUpErrors>({name: null, email: null, password:null})
+    const [errors, setErrors] = useState<SignUpErrors>({name: null, email: null, password: null})
+    const [formError, setFormError] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (formError) {
+            alert(formError)
+        }
+    }, [formError])
 
     const submitSignInForm = async (e: React.SubmitEvent) => {
         
@@ -29,20 +37,34 @@ const SignUpForm = ({className}: SignUpFormProps) => {
         const newErrors = {
             name: !name ? "Please enter your display name" : null,
             email: !email ? "Please enter your email address" : null,
-            password: !email ? "Please enter your password" : null
+            password: !password ? "Please enter your password" : null
         }
         
         setErrors(newErrors)
+        setFormError(null)
 
-        if(name || !email || !password) {
+        if(!name || !email || !password) {
             return 
         }
 
-        await authClient.signUp.email({
+        const {data, error} = await authClient.signUp.email({
             name,
             email,
             password
         })
+
+        console.log(data, error)
+
+        if (error) {
+            // 422 corresponds with validation issues
+            if (error.status === 400) {
+                setFormError(error.message!)
+            } else {
+                setFormError("Something went wrong. Please try again")
+            }
+        } else {
+            redirect("/project/chat")
+        }
     }
 
     return (
@@ -52,7 +74,7 @@ const SignUpForm = ({className}: SignUpFormProps) => {
                 <label htmlFor="email" >Display Name:</label>
                 <div className="flex flex-row bg-primary-main border-2">
                     <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/user.png" />
-                    <input type="text" id="email" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
+                    <input type="text" id="name" name="name" className="w-full focus:outline-none border-s-2 pl-2"/>
                 </div>
                 
                 <span className={`${errors?.name ? "visible" : "invisible"} text-sm text-red-500 mb-3`}>{errors?.name ?? "No error message"}</span>
@@ -60,7 +82,7 @@ const SignUpForm = ({className}: SignUpFormProps) => {
                 <label htmlFor="email" >Email Address:</label>
                 <div className="flex flex-row bg-primary-main border-2">
                     <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/email.png" />
-                    <input type="text" id="email" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
+                    <input type="text" id="email" name="email" className="w-full focus:outline-none border-s-2 pl-2"/>
                 </div>
                 
                 <span className={`${errors.email ? "visible" : "invisible"} text-sm text-red-500 mb-3`}>{errors.email ?? "No error message"}</span>
@@ -68,7 +90,7 @@ const SignUpForm = ({className}: SignUpFormProps) => {
                 <label htmlFor="password">Password:</label>
                 <div className="flex flex-row bg-primary-main border-2">
                     <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/padlock.png" />
-                    <input type="text" id="password" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
+                    <input type="password" id="password" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
                 </div>
                 
                 <span className={`${errors.password ? "visible" : "invisible"} text-sm text-red-500 mb-5`}>{errors.password ?? "No error message"}</span>
