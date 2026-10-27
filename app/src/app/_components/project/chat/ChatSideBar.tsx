@@ -32,7 +32,7 @@ const ChatSideBar = () => {
                     })}
                 </ExpandableList>
 
-                <ExpandableList label="Channels" className="mt-20">
+                <ExpandableList label="Agents" className="mt-20">
                     {agentChildrenLabels.map((label) => {
                         return (
                             <ChatBarOption
