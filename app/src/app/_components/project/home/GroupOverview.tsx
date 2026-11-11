@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-
 import CreateGroupButton from "../groups/CreateGroupButton"
 import CreateGroupPopUp from "../groups/CreateGroupPopUp"
 import GroupInvitationsButton from "../groups/GroupInvitationsButton"
@@ -10,10 +9,10 @@ import GroupInvitationsPopUp from "../groups/GroupInvitationsPopUp"
 
 type GroupOverviewProps = {
     className?: string
-    groups: [GroupOverviewElementProps] | null
+    groups: GroupOverviewElementProps[]
 }
 
-const GroupOverview = ({className, groups = null}: GroupOverviewProps) => {
+const GroupOverview = ({className, groups}: GroupOverviewProps) => {
     const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false)
     const [isGroupInvitationsOpen, setIsGroupInvitationsOpen] = useState(false)
 
@@ -37,7 +36,7 @@ const GroupOverview = ({className, groups = null}: GroupOverviewProps) => {
 
             <div className="border"></div>
             <div className="min-h-0 flex-1 overflow-y-auto scrollbar-none">
-                {groups ? 
+                {groups.length > 0 ? 
                 <>
                 {groups.map((group) => {
                     return (
