@@ -63,7 +63,7 @@ const SignUpForm = ({className}: SignUpFormProps) => {
                 setFormError("Something went wrong. Please try again")
             }
         } else {
-            redirect("/project/chat")
+            redirect("/project/home")
         }
     }
 
