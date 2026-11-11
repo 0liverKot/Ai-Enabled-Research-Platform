@@ -71,7 +71,7 @@ const SignUpForm = ({className}: SignUpFormProps) => {
         
         <div className={className}>
             <form className="flex flex-col" onSubmit={submitSignInForm}>
-                <label htmlFor="email" >Display Name:</label>
+                <label htmlFor="name" >Display Name:</label>
                 <div className="flex flex-row bg-primary-main border-2">
                     <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/user.png" />
                     <input type="text" id="name" name="name" className="w-full focus:outline-none border-s-2 pl-2"/>
