@@ -28,17 +28,19 @@ model Post {
 }
 
 model User {
-  id            String        @id
-  name          String //@db.Text
-  email         String
-  emailVerified Boolean       @default(false)
-  image         String? //@db.Text
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  posts         Post[]
-  memberships   GroupMember[]
+  id                  String            @id
+  name                String //@db.Text
+  email               String
+  emailVerified       Boolean           @default(false)
+  image               String? //@db.Text
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @default(now()) @updatedAt
+  sessions            Session[]
+  accounts            Account[]
+  posts               Post[]
+  memberships         GroupMember[]
+  invitationsReceived GroupInvitation[] @relation("InvitationRecipient")
+  invitationsSent     GroupInvitation[] @relation("InvitationSender")
 
   @@unique([email])
   @@map("user")
@@ -90,9 +92,11 @@ model Verification {
 }
 
 model Group {
-  id      String        @id @default(cuid())
-  name    String
-  members GroupMember[]
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  members     GroupMember[]
+  invitations GroupInvitation[]
 }
 
 enum GroupRole {
@@ -110,4 +114,20 @@ model GroupMember {
 
   @@id([groupId, userId])
   @@index([userId])
+}
+
+model GroupInvitation {
+  id        String @id @default(cuid())
+  inviterId String
+  inviteeId String
+  groupId   String
+
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  invitee   User     @relation("InvitationRecipient", fields: [inviteeId], references: [id], onDelete: Cascade)
+  inviter   User     @relation("InvitationSender", fields: [inviterId], references: [id], onDelete: Cascade)
+  message   String?
+  createdAt DateTime @default(now())
+
+  @@unique([groupId, inviteeId])
+  @@index([inviteeId])
 }

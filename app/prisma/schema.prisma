@@ -39,8 +39,8 @@ model User {
     accounts            Account[]
     posts               Post[]
     memberships         GroupMember[]
-    invitationsReceived GroupInvitation[] @relation("InvitationInvitee")
-    invitationsSent     GroupInvitation[] @relation("InvitationInviter")
+    invitationsReceived GroupInvitation[] @relation("InvitationRecipient")
+    invitationsSent     GroupInvitation[] @relation("InvitationSender")
 
     @@unique([email])
     @@map("user")
@@ -94,6 +94,7 @@ model Verification {
 model Group {
     id          String            @id @default(cuid())
     name        String
+    description String? 
     members     GroupMember[]
     invitations GroupInvitation[]
 }
@@ -124,6 +125,8 @@ model GroupInvitation {
     group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
     invitee User  @relation("InvitationRecipient", fields: [inviteeId], references: [id], onDelete: Cascade)
     inviter User  @relation("InvitationSender", fields: [inviterId], references: [id], onDelete: Cascade)
+    message String? 
+    createdAt DateTime @default(now())
 
     @@unique([groupId, inviteeId])
     @@index([inviteeId])

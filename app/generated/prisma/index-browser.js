@@ -177,13 +177,23 @@ exports.Prisma.VerificationScalarFieldEnum = {
 
 exports.Prisma.GroupScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  description: 'description'
 };
 
 exports.Prisma.GroupMemberScalarFieldEnum = {
   userId: 'userId',
   groupId: 'groupId',
   role: 'role'
+};
+
+exports.Prisma.GroupInvitationScalarFieldEnum = {
+  id: 'id',
+  inviterId: 'inviterId',
+  inviteeId: 'inviteeId',
+  groupId: 'groupId',
+  message: 'message',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -212,7 +222,8 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Group: 'Group',
-  GroupMember: 'GroupMember'
+  GroupMember: 'GroupMember',
+  GroupInvitation: 'GroupInvitation'
 };
 
 /**
