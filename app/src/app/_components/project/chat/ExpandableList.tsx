@@ -24,7 +24,7 @@ const ExpandableList = ({
             <button
                 type="button"
                 aria-expanded={expanded}
-                className="flex w-full items-center justify-between rounded px-2 py-1 text-left hover:bg-black/10"
+                className="flex w-full items-center justify-between rounded px-2 py-1 text-left hover:bg-primary-tertiary"
                 onClick={() => setExpanded((isExpanded) => !isExpanded)}
             >
                 <span>{label}</span>

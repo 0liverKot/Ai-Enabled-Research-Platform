@@ -16,10 +16,10 @@ const CreateGroupPopUp = ({ onClose }: CreateGroupPopUpProps) => {
                 <form className="flex flex-row h-full w-full gap-4 mt-4">
                     <div className="flex flex-col bg-primary-secondary h-full w-1/2 p-2 rounded-md">
                         <label htmlFor="group-name" className="mt-2">Group Name:</label>
-                        <input id="group-name" name="group-name" className="rounded-md border border-primary-tertiary bg-white px-2 py-1 focus:border-accent-main focus:outline-none" />
+                        <input id="group-name" name="group-name" className="rounded-md border border-primary-tertiary bg-primary-main px-2 py-1 focus:border-accent-main focus:outline-none" />
 
                         <label htmlFor="group-description" className="mt-4">Group Description:</label>
-                        <textarea id="group-description" name="group-description" className="rounded-md border border-primary-tertiary bg-white px-2 py-1 focus:border-accent-main focus:outline-none h-full resize-none"/>
+                        <textarea id="group-description" name="group-description" className="rounded-md border border-primary-tertiary bg-primary-main px-2 py-1 focus:border-accent-main focus:outline-none h-full resize-none"/>
                     </div>
 
                     <div className="flex flex-col w-1/2 gap-2">

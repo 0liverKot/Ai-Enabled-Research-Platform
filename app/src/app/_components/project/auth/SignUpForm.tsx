@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation"
 import { useEffect, useState } from "react"
 import { authClient } from "~/server/better-auth/client"
+import TextField from "~/app/_components/ui/TextField"
 
 type SignUpFormProps = {
     className?: string
@@ -70,30 +71,10 @@ const SignUpForm = ({className}: SignUpFormProps) => {
     return (
         
         <div className={className}>
-            <form className="flex flex-col" onSubmit={submitSignInForm}>
-                <label htmlFor="name" >Display Name:</label>
-                <div className="flex flex-row bg-primary-main border-2">
-                    <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/user.png" />
-                    <input type="text" id="name" name="name" className="w-full focus:outline-none border-s-2 pl-2"/>
-                </div>
-                
-                <span className={`${errors?.name ? "visible" : "invisible"} text-sm text-red-500 mb-3`}>{errors?.name ?? "No error message"}</span>
-                
-                <label htmlFor="email" >Email Address:</label>
-                <div className="flex flex-row bg-primary-main border-2">
-                    <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/email.png" />
-                    <input type="text" id="email" name="email" className="w-full focus:outline-none border-s-2 pl-2"/>
-                </div>
-                
-                <span className={`${errors.email ? "visible" : "invisible"} text-sm text-red-500 mb-3`}>{errors.email ?? "No error message"}</span>
-
-                <label htmlFor="password">Password:</label>
-                <div className="flex flex-row bg-primary-main border-2">
-                    <img className="h-7 w-7 shrink-0 object-contain m-2" src="/images/padlock.png" />
-                    <input type="password" id="password" name="password" className="w-full focus:outline-none border-s-2 pl-2"/>
-                </div>
-                
-                <span className={`${errors.password ? "visible" : "invisible"} text-sm text-red-500 mb-5`}>{errors.password ?? "No error message"}</span>
+            <form noValidate className="flex flex-col gap-2" onSubmit={submitSignInForm}>
+                <TextField id="name" label="Display Name:" icon="/images/user.png" autoComplete="name" error={errors.name}/>
+                <TextField id="email" label="Email Address:" icon="/images/email.png" type="email" autoComplete="email" error={errors.email}/>
+                <TextField id="password" label="Password:" icon="/images/padlock.png" type="password" autoComplete="new-password" error={errors.password}/>
 
                 <button className="border-none bg-accent-main rounded-md w-1/2 m-auto h-10 text-text-accent-secondary hover:scale-105" type="submit">Sign Up</button>
             </form>

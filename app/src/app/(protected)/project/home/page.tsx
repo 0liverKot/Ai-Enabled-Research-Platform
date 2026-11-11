@@ -19,10 +19,15 @@ const projectHomePage = async () => {
     return (
         <>
             <div className="grid h-full min-h-0 grid-cols-3 grid-rows-[repeat(3,minmax(0,1fr))] gap-4 overflow-hidden p-15">
-                <GroupOverview className="col-start-1 row-span-1 row-start-1 border-2" groups={groups}/>
-                <FilesOverview className="col-start-1 row-span-2 row-start-2 border-2" />
-                <MessagesOverview className="col-start-2 row-span-3 row-start-1 border-2" />
-                <TasksOverview className="col-start-3 row-span-3 row-start-1 border-2" />
+                <GroupOverview 
+                className="col-start-1 row-span-1 row-start-1 border-2 rounded-xl  bg-primary-secondary shadow-md" 
+                groups={groups}/>
+                <FilesOverview 
+                className="col-start-1 row-span-2 row-start-2 border-2 rounded-xl bg-primary-secondary shadow-md"/>
+                <MessagesOverview 
+                className="col-start-2 row-span-3 row-start-1 border-2 rounded-xl bg-primary-secondary shadow-md"/>
+                <TasksOverview 
+                className="col-start-3 row-span-3 row-start-1 border-2 rounded-xl bg-primary-secondary shadow-md" />
             </div>
         </>
     );
