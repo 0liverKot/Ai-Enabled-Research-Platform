@@ -22,13 +22,13 @@ const GroupOverview = ({className, groups}: GroupOverviewProps) => {
             <div className="flex flex-row items-center p-2 gap-4">
                 <span className="text-xl w-full">Your Groups</span>
                 <GroupInvitationsButton 
-                    buttonClassName="border-2 p-2 rounded-md shadow-md hover:scale-110" 
+                    buttonClassName="border-2 p-2 rounded-md shadow-md hover:scale-105 hover:bg-primary-tertiary" 
                     imageClassName="w-8 h-8 shrink-0 content-contain"
                     onClick={() => (setIsGroupInvitationsOpen(true))}
                 />
 
                 <CreateGroupButton
-                    buttonClassName="border-2 p-2 rounded-md shadow-md hover:scale-110"
+                    buttonClassName="bg-primary-secondary border-2 p-2 rounded-md shadow-md hover:scale-105 hover:bg-primary-tertiary"
                     imageClassName="w-8 h-8 shrink-0 content-contain"
                     onClick={() => setIsCreateGroupOpen(true)}
                 />
