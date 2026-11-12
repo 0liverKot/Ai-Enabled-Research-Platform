@@ -14,7 +14,8 @@
     --color-text-main: hsl(220 20% 20%);
     --color-text-muted: hsl(220 10% 45%);
     --color-text-accent: hsl(280 55% 40%);    
-    --color-text-accent-secondary: hsl(50 97.64% 49.8%)
+    --color-text-accent-secondary: hsl(50 97.64% 49.8%);
+    --color-text-inverted: hsl(220 15% 99%);
 }
 
 @layer base {

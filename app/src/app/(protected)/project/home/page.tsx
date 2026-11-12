@@ -1,4 +1,4 @@
-import { api } from "~/trpc/server";
+import { api, HydrateClient } from "~/trpc/server";
 
 import FilesOverview from "~/app/_components/project/home/FilesOverview";
 import GroupOverview from "~/app/_components/project/home/GroupOverview";
@@ -7,6 +7,8 @@ import TasksOverview from "~/app/_components/project/home/TasksOverview";
 
 const projectHomePage = async () => {
     
+    // starts on the server, then streams into the client cache for useQuery
+    void api.group.myReceivedInvites.prefetch();
 
     const groups = (await api.group.mine()).map((group) => ({
         name: group.name,
@@ -17,7 +19,7 @@ const projectHomePage = async () => {
     }));
    
     return (
-        <>
+        <HydrateClient>
             <div className="grid h-full min-h-0 grid-cols-3 grid-rows-[repeat(3,minmax(0,1fr))] gap-4 overflow-hidden p-15">
                 <GroupOverview 
                 className="col-start-1 row-span-1 row-start-1 border-2 rounded-xl  bg-primary-secondary shadow-md" 
@@ -29,7 +31,7 @@ const projectHomePage = async () => {
                 <TasksOverview 
                 className="col-start-3 row-span-3 row-start-1 border-2 rounded-xl bg-primary-secondary shadow-md" />
             </div>
-        </>
+        </HydrateClient>
     );
 };
 

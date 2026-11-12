@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { api } from "~/trpc/react";
+import InviteRow from "./InviteRow";
+import { timeAgo } from "~/app/lib/time";
 
 type GroupInvitationsPopUpProps = {
     onClose: () => void;
@@ -15,6 +18,8 @@ const tabs: { id: InvitationsTab; label: string }[] = [
 
 const GroupInvitationsPopUp = ({ onClose }: GroupInvitationsPopUpProps) => {
     const [activeTab, setActiveTab] = useState<InvitationsTab>("received");
+
+    const { data: invites, isPending, error } = api.group.myReceivedInvites.useQuery()
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -49,7 +54,17 @@ const GroupInvitationsPopUp = ({ onClose }: GroupInvitationsPopUpProps) => {
 
                 <div className="mt-6">
                     {activeTab === "received" ? (
-                        <p className="text-text-muted">Placeholder: invitations you have received will appear here.</p>
+                        isPending ? (
+                            <p className="text-text-muted">Loading invitations…</p>
+                        ) : error ? (
+                            <p className="text-red-500">{"Couldn't load invitations."}</p>
+                        ) : invites.length === 0 ? (
+                            <p className="text-text-muted">No pending invites.</p>
+                        ) : (
+                            invites.map((invite) => (
+                                <InviteRow key={`${invite.id}-invite`} invite={invite}/>
+                            ))
+                        )
                     ) : (
                         <p className="text-text-muted">Placeholder: invitations you have sent will appear here.</p>
                     )}
