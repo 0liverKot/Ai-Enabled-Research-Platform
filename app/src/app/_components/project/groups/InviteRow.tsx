@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation"
+import { timeAgo } from "~/app/lib/time"
 import type { RouterOutputs } from "~/trpc/react"
 import { api } from "~/trpc/react"
 
@@ -38,7 +39,10 @@ const InviteRow = ({invite}: InviteRowProps) => {
             </div>
 
             <div className="flex flex-col pt-1 gap-2 items-left">
-                <span className="text-xl">{invite.group.name}</span>
+                <div className="flex gap-2 items-center">
+                    <span className="text-xl">{invite.group.name}</span>
+                    <span className="text-xs text-text-muted">{timeAgo(invite.createdAt)}</span>
+                </div>
                 <span className="text-xs text-text-muted">{invite.message ?? "We would like you to join our group!"}</span>
             </div>
 

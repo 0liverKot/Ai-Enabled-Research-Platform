@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import InviteRow from "./InviteRow";
-import { timeAgo } from "~/app/lib/time";
 
 type GroupInvitationsPopUpProps = {
     onClose: () => void;

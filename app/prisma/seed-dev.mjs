@@ -13,7 +13,7 @@ import { PrismaClient } from "../generated/prisma/index.js";
 const DEMO_EMAIL = "demo.inviter@example.com";
 const DEMO_PASSWORD = "password123";
 const DEMO_USER_ID = "demo-inviter";
-const DEMO_GROUP_ID = "demo-research-group";
+const DEMO_GROUP_ID = "demo-research-group2";
 
 const inviteeEmail = process.argv[2];
 if (!inviteeEmail) {
@@ -62,7 +62,7 @@ try {
         update: {},
         create: {
             id: DEMO_GROUP_ID,
-            name: "Demo Research Group",
+            name: "Demo Research Group 2",
             members: { create: { userId: inviter.id, role: "ADMIN" } },
         },
     });
