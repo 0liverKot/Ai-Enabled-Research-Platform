@@ -39,7 +39,7 @@ const InviteRow = ({invite}: InviteRowProps) => {
 
             <div className="flex flex-col pt-1 gap-2 items-left">
                 <span className="text-xl">{invite.group.name}</span>
-                <span className="text-xs text-text-muted">{invite.message}</span>
+                <span className="text-xs text-text-muted">{invite.message ?? "We would like you to join our group!"}</span>
             </div>
 
             <button 
