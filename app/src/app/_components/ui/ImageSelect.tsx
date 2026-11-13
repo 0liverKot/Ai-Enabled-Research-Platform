@@ -13,7 +13,8 @@ type ImageSelectProps = {
     options: Option[],
     value: string | null,
     onChange: (value: string) => void,
-    placeholder?: string
+    placeholder?: string,
+    disabled?: boolean
 }
 
 const ImageSelect = ({ 
@@ -21,7 +22,8 @@ const ImageSelect = ({
     options,
     value, 
     onChange, 
-    placeholder = "Select..."
+    placeholder = "Select...",
+    disabled = false
 }: ImageSelectProps) => {
     
     const [open, setOpen] = useState(false);
@@ -44,8 +46,9 @@ const ImageSelect = ({
         <div ref={ref} className={className}>
             <button
             type="button"
+            disabled={disabled}
             onClick={() => setOpen((open) => !open)}
-            className="flex w-full items-center gap-2 rounded border px-3 py-2 test-left">
+            className="flex w-full items-center gap-2 rounded border px-3 py-2 text-left disabled:cursor-not-allowed disabled:opacity-50">
                 {selected ? (
                     <>
                         <img src={selected.image} className="h-6 w-6 rounded-full object-cover"/>
@@ -56,7 +59,7 @@ const ImageSelect = ({
                 )}                
             </button>
             
-            {open && (
+            {open && !disabled && (
                 <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded border bg-primary-secondary shadow-md">
                     {options.map((option) => (
                         <li
