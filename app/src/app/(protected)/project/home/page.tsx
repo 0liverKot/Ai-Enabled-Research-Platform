@@ -11,10 +11,10 @@ const projectHomePage = async () => {
     void api.group.myReceivedInvites.prefetch();
 
     const groups = (await api.group.mine()).map((group) => ({
-        name: group.name,
-        
+        ...group,
+
         // temporary until these features are properly added
-        groupImage: "/images/group-chat.png",
+        image: "/images/group-chat.png",
         notifications: 0
     }));
    

@@ -4,17 +4,18 @@ import { useState } from "react"
 import CreateGroupButton from "../groups/CreateGroupButton"
 import CreateGroupPopUp from "../groups/CreateGroupPopUp"
 import GroupInvitationsButton from "../groups/GroupInvitationsButton"
-import GroupOverviewElement, { type GroupOverviewElementProps } from "./GroupOverviewElement"
+import GroupOverviewElement, { type OverviewGroup } from "./GroupOverviewElement"
 import GroupInvitationsPopUp from "../groups/GroupInvitationsPopUp"
 
 type GroupOverviewProps = {
     className?: string
-    groups: GroupOverviewElementProps[]
+    groups: OverviewGroup[]
 }
 
 const GroupOverview = ({className, groups}: GroupOverviewProps) => {
     const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false)
     const [isGroupInvitationsOpen, setIsGroupInvitationsOpen] = useState(false)
+
 
     return ( 
         <>
@@ -40,8 +41,8 @@ const GroupOverview = ({className, groups}: GroupOverviewProps) => {
                 <>
                 {groups.map((group) => {
                     return (
-                    <div key={`group-element-${group.name}`}>
-                        <GroupOverviewElement groupImage={group.groupImage} name={group.name} notifications={group.notifications}/>
+                    <div key={`group-element-${group.id}`}>
+                        <GroupOverviewElement group={group}/>
                         <div className="border border-primary-secondary"></div>
                     </div>)}
                     )}
@@ -59,7 +60,7 @@ const GroupOverview = ({className, groups}: GroupOverviewProps) => {
         )}
         
         {isGroupInvitationsOpen && (
-            <GroupInvitationsPopUp onClose={() => setIsGroupInvitationsOpen(false)} />
+            <GroupInvitationsPopUp groups={groups} onClose={() => setIsGroupInvitationsOpen(false)} />
         )}
         </>
     
