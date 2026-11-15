@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { api } from "~/trpc/react";
-import InviteRow from "./InviteRow";
+import ReceivedInviteRow from "./ReceivedInviteRow";
 import CreateInviteButton from "./CreateInviteButton";
 import CreateInvitePopUp from "./CreateInvitePopUp";
 import type { OverviewGroup } from "../home/GroupOverviewElement";
+import SentInviteRow from "./SentInviteRow";
 
 type GroupInvitationsPopUpProps = {
     groups: OverviewGroup[],
@@ -26,7 +27,15 @@ const GroupInvitationsPopUp = ({ groups, onClose }: GroupInvitationsPopUpProps) 
     const [activeTab, setActiveTab] = useState<InvitationsTab>("received");
     const [isCreateInviteOpen, setIsCreateInviteOpen] = useState(false)
 
-    const { data: invites, isPending, error } = api.group.myReceivedInvites.useQuery()
+    const { 
+        data: receivedInvites, 
+        isPending: receivedIsPending, 
+        error: receivedError } = api.group.myReceivedInvites.useQuery()
+    
+    const { 
+        data: sentInvites, 
+        isPending: sentIsPending, 
+        error: sentError } = api.group.mySentInvites.useQuery()
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
@@ -81,19 +90,29 @@ const GroupInvitationsPopUp = ({ groups, onClose }: GroupInvitationsPopUpProps) 
 
                 <div className="mt-6">
                     {activeTab === "received" ? (
-                        isPending ? (
+                        receivedIsPending ? (
                             <p className="text-text-muted">Loading invitations…</p>
-                        ) : error ? (
+                        ) : receivedError ? (
                             <p className="text-red-500">{"Couldn't load invitations."}</p>
-                        ) : invites.length === 0 ? (
-                            <p className="text-text-muted">No pending invites.</p>
+                        ) : receivedInvites.length === 0 ? (
+                            <p className="text-text-muted">No invites received.</p>
                         ) : (
-                            invites.map((invite) => (
-                                <InviteRow key={`${invite.id}-invite`} invite={invite}/>
+                            receivedInvites.map((invite) => (
+                                <ReceivedInviteRow key={`${invite.id}-invite`} invite={invite}/>
                             ))
                         )
                     ) : (
-                        <p className="text-text-muted">Placeholder: invitations you have sent will appear here.</p>
+                        sentIsPending ? (
+                            <p className="text-text-muted">Loading invitations…</p>
+                        ) : sentError ? (
+                            <p className="text-red-500">{"Couldn't load invitations."}</p>
+                        ) : sentInvites.length === 0 ? (
+                            <p className="text-text-muted">No invites sent.</p>
+                        ) : (
+                            sentInvites.map((invite) => (
+                                <SentInviteRow key={`${invite.id}-invite`} invite={invite}/>
+                            ))
+                        )
                     )}
                 </div>
                 

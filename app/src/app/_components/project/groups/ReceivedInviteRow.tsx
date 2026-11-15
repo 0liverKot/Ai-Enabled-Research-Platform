@@ -9,7 +9,7 @@ type InviteRowProps = {
     invite: ReceivedInvite
 }
 
-const InviteRow = ({invite}: InviteRowProps) => {
+const ReceivedInviteRow = ({invite}: InviteRowProps) => {
 
     const router = useRouter()
     const utils = api.useUtils()
@@ -30,7 +30,7 @@ const InviteRow = ({invite}: InviteRowProps) => {
     })
 
     return (
-        <div className="flex bg-primary-secondary border rounded-xl gap-8 items-center">
+        <div className="flex bg-primary-secondary border rounded-xl gap-8 items-center mb-4">
             <div className="flex border-r pr-2 p-4 flex-col gap-1 justify-center items-center">
                 <span>{invite.inviter.name}</span>
                 <img 
@@ -70,4 +70,4 @@ const InviteRow = ({invite}: InviteRowProps) => {
     )
 }
 
-export default InviteRow
+export default ReceivedInviteRow

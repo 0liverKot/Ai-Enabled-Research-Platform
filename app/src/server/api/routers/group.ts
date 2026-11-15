@@ -97,6 +97,22 @@ export const groupRouter = createTRPCRouter({
             }    
     }),
 
+    cancel: protectedProcedure
+        .input(z.object({ inviteId: z.string() }))
+        .mutation(async ({ ctx, input }) => {
+            const invite = await ctx.db.groupInvitation.findFirst({
+                where: { id: input.inviteId, inviterId: ctx.session.user.id }
+            })
+
+            if (!invite) {
+                throw new TRPCError({ code: "NOT_FOUND", message: "Invitation not found" })
+            }
+
+            await ctx.db.groupInvitation.delete({
+                where: { id: input.inviteId, inviterId: ctx.session.user.id }
+            })
+        }),
+
     myReceivedInvites: protectedProcedure.query(({ ctx }) => 
         ctx.db.groupInvitation.findMany({
             where: {inviteeId: ctx.session.user.id},

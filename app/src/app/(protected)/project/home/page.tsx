@@ -9,6 +9,7 @@ const projectHomePage = async () => {
     
     // starts on the server, then streams into the client cache for useQuery
     void api.group.myReceivedInvites.prefetch();
+    void api.group.mySentInvites.prefetch();
     void api.group.mine.prefetch();
 
     const groups = (await api.group.mine()).map((group) => ({
