@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ImageSelect from "../../ui/ImageSelect";
 import type { OverviewGroup } from "../home/GroupOverviewElement";
 import { api } from "~/trpc/react";
+import TextField from "../../ui/TextField";
 
 type CreateInvitePopUpProps = {
     className?: string;
@@ -12,8 +13,18 @@ type CreateInvitePopUpProps = {
 const CreateInvitePopUp = ({className, groups, onClose}: CreateInvitePopUpProps) => {
     const ref = useRef<HTMLDivElement>(null)
 
+    const utils = api.useUtils()
+    const inivteMutation = api.group.invite.useMutation({
+        onSuccess: async () => {
+            await utils.user.notInGroup.invalidate()
+            onClose()
+        },
+        onError: (err) => alert(err.message)
+    })
+
     const [selectedGroupOption, setSelectedGroupOption] = useState<string | null>(null)
     const [selectedUserOption, setSelectedUserOption] = useState<string | null>(null)
+    const [message, setMessage] = useState("")
 
     const groupOptions = groups.map((group) => ({
         value: group.id,
@@ -31,6 +42,18 @@ const CreateInvitePopUp = ({className, groups, onClose}: CreateInvitePopUpProps)
         label: user.name,
         image: user.image ?? "/images/user.png"
     }))
+
+    const sendInvite = () => {
+        if(!selectedGroupOption || !selectedUserOption) return
+
+        const trimmedMessage = message.trim()
+        inivteMutation.mutate({
+            groupId: selectedGroupOption,
+            inviteeId: selectedUserOption,
+            message: trimmedMessage === "" ? undefined : trimmedMessage
+        })
+
+    }
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
@@ -73,6 +96,26 @@ const CreateInvitePopUp = ({className, groups, onClose}: CreateInvitePopUpProps)
                 onChange={(value) => setSelectedUserOption(value)}
                 disabled={selectedGroupOption === null}
             />
+
+            <label className="text-text-muted mt-4">
+                Add a message
+                <label className="text-sm">{" (optional)"}</label>
+                :
+            </label>
+            <TextField 
+                id="message" 
+                label="" 
+                multiline rows={3}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                />
+
+            <button 
+            className="border w-1/2 mt-4 h-10 bg-accent-main text-text-accent-secondary rounded-xl border hover:scale-105 hover:bg-accent-secondary"
+            onClick={sendInvite}
+            >
+                {inivteMutation.isPending ? "Sending..." : "Send"}
+            </button>
         </div>
     )
 }

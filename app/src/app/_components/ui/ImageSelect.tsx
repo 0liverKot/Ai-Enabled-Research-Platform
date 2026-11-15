@@ -43,12 +43,12 @@ const ImageSelect = ({
 
 
     return (
-        <div ref={ref} className={className}>
+        <div ref={ref} className={`${className ?? ""}`}>
             <button
             type="button"
             disabled={disabled}
             onClick={() => setOpen((open) => !open)}
-            className="flex w-full items-center gap-2 rounded border px-3 py-2 text-left disabled:cursor-not-allowed disabled:opacity-50">
+            className="flex w-full items-center gap-2 rounded border px-3 py-2 text-left disabled:cursor-not-allowed disabled:opacity-50 focus:border-accent-main">
                 {selected ? (
                     <>
                         <img src={selected.image} className="h-6 w-6 rounded-full object-cover"/>
