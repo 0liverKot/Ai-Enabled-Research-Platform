@@ -6,16 +6,24 @@ import CreateGroupPopUp from "../groups/CreateGroupPopUp"
 import GroupInvitationsButton from "../groups/GroupInvitationsButton"
 import GroupOverviewElement, { type OverviewGroup } from "./GroupOverviewElement"
 import GroupInvitationsPopUp from "../groups/GroupInvitationsPopUp"
+import { api } from "~/trpc/react"
 
 type GroupOverviewProps = {
     className?: string
-    groups: OverviewGroup[]
 }
 
-const GroupOverview = ({className, groups}: GroupOverviewProps) => {
+const GroupOverview = ({className}: GroupOverviewProps) => {
     const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false)
     const [isGroupInvitationsOpen, setIsGroupInvitationsOpen] = useState(false)
 
+    const { data } = api.group.mine.useQuery()
+    const groups: OverviewGroup[] = (data ?? []).map((group) => ({
+        ...group,
+
+        // temporary till these features are added properly 
+        image: "/images/group-chat.png",
+        notifications: 0
+    }))
 
     return ( 
         <>

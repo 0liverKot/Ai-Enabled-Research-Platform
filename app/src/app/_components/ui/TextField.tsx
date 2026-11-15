@@ -39,7 +39,7 @@ const TextField = (props: TextFieldProps) => {
                 <textarea
                     {...sharedProps}
                     rows={4}
-                    className="w-full resize-none bg-transparent focus:outline-none"
+                    className="h-full w-full resize-none bg-transparent focus:outline-none"
                     {...textareaProps}
                 />
             );
@@ -62,7 +62,7 @@ const TextField = (props: TextFieldProps) => {
 
             <div
                 className={`bg-primary-main focus-within:border-accent-main flex gap-2 rounded-md border px-2 py-1 ${
-                    props.multiline ? "items-start" : "items-center"
+                    props.multiline ? "min-h-0 flex-1 items-start" : "items-center"
                 } ${error ? "border-red-500" : "border-primary-tertiary"}`}
             >
                 {icon && (
