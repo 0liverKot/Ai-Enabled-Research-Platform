@@ -20,6 +20,7 @@ const tabs: { id: InvitationsTab; label: string }[] = [
 ];
 
 const GroupInvitationsPopUp = ({ groups, onClose }: GroupInvitationsPopUpProps) => {
+
     const [activeTab, setActiveTab] = useState<InvitationsTab>("received");
     const [isCreateInviteOpen, setIsCreateInviteOpen] = useState(false)
 
@@ -60,7 +61,7 @@ const GroupInvitationsPopUp = ({ groups, onClose }: GroupInvitationsPopUpProps) 
      
                      <button className="text-xl hover:scale-105" type="button" aria-label="Close" onClick={onClose}>
                             X
-                        </button>
+                    </button>
 
                     </div>
                 </div>
@@ -87,7 +88,8 @@ const GroupInvitationsPopUp = ({ groups, onClose }: GroupInvitationsPopUpProps) 
                 {isCreateInviteOpen && (
                     <CreateInvitePopUp 
                     className="z-10 absolute inset-y-10 right-10 w-1/2 bg-primary-secondary border rounded-xl shadow-md p-4 flex flex-col"
-                    groups={groups}/>
+                    groups={groups}
+                    onClose={() => setIsCreateInviteOpen(false)}/>
                 )}
 
             </div>
