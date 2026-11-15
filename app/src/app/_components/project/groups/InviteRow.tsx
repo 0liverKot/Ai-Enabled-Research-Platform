@@ -17,6 +17,7 @@ const InviteRow = ({invite}: InviteRowProps) => {
     const accept = api.group.accept.useMutation({
         onSuccess: async () => {
             await utils.group.myReceivedInvites.invalidate()
+            await utils.group.mine.invalidate()
             router.refresh()
         }
     })
