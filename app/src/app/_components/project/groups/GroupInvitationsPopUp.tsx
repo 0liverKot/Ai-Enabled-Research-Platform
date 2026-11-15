@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "~/trpc/react";
 import InviteRow from "./InviteRow";
 import CreateInviteButton from "./CreateInviteButton";
@@ -21,14 +21,26 @@ const tabs: { id: InvitationsTab; label: string }[] = [
 
 const GroupInvitationsPopUp = ({ groups, onClose }: GroupInvitationsPopUpProps) => {
 
+    const ref = useRef<HTMLDivElement>(null)
+
     const [activeTab, setActiveTab] = useState<InvitationsTab>("received");
     const [isCreateInviteOpen, setIsCreateInviteOpen] = useState(false)
 
     const { data: invites, isPending, error } = api.group.myReceivedInvites.useQuery()
 
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (ref.current && !ref.current.contains(e.target as Node)) {
+                onClose()
+            }
+        }
+        document.addEventListener("mousedown", handleClick)
+        return () => document.removeEventListener("mousedown", handleClick)
+    }, [onClose])
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative flex h-1/2 w-1/2 flex-col overflow-hidden rounded-xl border-t-6 border-accent-main bg-primary-main p-10 shadow-xl">
+            <div ref={ref} className="relative flex h-1/2 w-1/2 flex-col overflow-hidden rounded-xl border-t-6 border-accent-main bg-primary-main p-10 shadow-xl">
                 <div className="flex items-baseline justify-between">
                     <div role="tablist" className="flex items-baseline gap-4">
                         {tabs.map((tab) => {
