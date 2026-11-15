@@ -42,7 +42,7 @@ const ReceivedInviteRow = ({invite}: InviteRowProps) => {
             </div>
 
             <button 
-            className="mr-10 bg-accent-main text-text-accent-secondary rounded-xl border h-10 w-1/5 hover:scale-105 hover:bg-red-500"
+            className="mr-10 bg-accent-main text-text-accent-secondary rounded-xl border h-10 w-1/5 hover:scale-105 hover:bg-accent-secondary"
             onClick={() => cancel.mutate({ inviteId: invite.id })}>
                 {cancel.isPending ? "Cancelling...": "Cancel"}
             </button>
