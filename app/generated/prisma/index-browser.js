@@ -196,6 +196,13 @@ exports.Prisma.GroupInvitationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ChannelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  main: 'main',
+  groupId: 'groupId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -223,7 +230,8 @@ exports.Prisma.ModelName = {
   Verification: 'Verification',
   Group: 'Group',
   GroupMember: 'GroupMember',
-  GroupInvitation: 'GroupInvitation'
+  GroupInvitation: 'GroupInvitation',
+  Channel: 'Channel'
 };
 
 /**

@@ -3,18 +3,22 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { Prisma } from "generated/prisma";
 import { getMembership, requireAdmin, requireMember } from "../groupHelpers";
+import { createChannel } from "../channelHelpers";
 
 export const groupRouter = createTRPCRouter({
     create: protectedProcedure
         .input(z.object({ name: z.string().trim().min(1).max(50), description: z.string().trim().min(1).max(250).optional()}))
-        .mutation(({ctx, input}) => 
-            ctx.db.group.create({
-                data: {
-                    name: input.name,
-                    description: input.description,
-                    members: {create: {userId: ctx.session.user.id, role: "ADMIN"}},
-                },
-            })
+        .mutation(({ ctx, input }) => 
+            ctx.db.$transaction(async (tx) => {
+                const group = await tx.group.create({
+                    data: {
+                        name: input.name,
+                        description: input.description,
+                        members: { create: { userId: ctx.session.user.id, role: "ADMIN"}}
+                    }
+                })
+                await createChannel(tx, group.id, "general", true)
+            }) 
         ),
     
     mine: protectedProcedure.query(({ ctx }) =>

@@ -97,6 +97,7 @@ model Group {
     description String? 
     members     GroupMember[]
     invitations GroupInvitation[]
+    channels Channel[]
 }
 
 enum GroupRole {
@@ -130,4 +131,15 @@ model GroupInvitation {
 
     @@unique([groupId, inviteeId])
     @@index([inviteeId])
+}
+
+model Channel {
+    id String @id @default(cuid())
+    name String 
+    main Boolean @default(false)
+    groupId String 
+
+    group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+    @@index([groupId])
 }

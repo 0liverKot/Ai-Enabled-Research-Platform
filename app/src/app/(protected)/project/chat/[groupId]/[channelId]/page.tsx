@@ -1,13 +1,13 @@
 type ChatRoomPageProps = {
-    params: Promise<{ groupId: string; chatId: string }>
+    params: Promise<{ groupId: string; channelId: string }>
 }
 
 const ChatRoomPage = async ({ params }: ChatRoomPageProps) => {
-    const { groupId, chatId } = await params
+    const { groupId, channelId } = await params
 
     return (
         <div>
-            Chat {chatId} in group {groupId}
+            Chat {channelId} in group {groupId}
         </div>
     );
 };
