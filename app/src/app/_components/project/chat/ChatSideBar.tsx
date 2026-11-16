@@ -1,7 +1,11 @@
 import ChatBarOption from "./ChatBarOption";
 import ExpandableList from "./ExpandableList";
 
-const ChatSideBar = () => {
+type ChatSideBarProps = {
+    groupId: string
+}
+
+const ChatSideBar = ({groupId}: ChatSideBarProps) => {
     const channelChildrenLabels = ["channel 1", "channel 2", "channel 3"];
     const directMessageChildrenLabels = ["User 1", "User 2", "User 3"];
     const agentChildrenLabels = ["Agent 1", "Agent 2"];
