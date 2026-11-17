@@ -29,5 +29,21 @@ export const channelRouter = createTRPCRouter({
                     name: true
                 } 
             })
+       }),
+    
+    getChannel: protectedProcedure
+       .input(z.object({ channelId: z.string(), groupId: z.string() }))
+       .query(async ({ ctx, input }) => {
+        await requireMember(ctx.db, input.groupId, ctx.session.user.id)
+
+        return await ctx.db.channel.findFirst({
+            where: { groupId: input.groupId, id: input.channelId},
+            select: {
+                id: true,
+                name: true
+            }
+        })
        })
+
+    
 })
