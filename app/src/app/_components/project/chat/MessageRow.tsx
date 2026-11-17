@@ -1,12 +1,12 @@
-import type { Message } from "./ChatContainer"
+import type { ChatMessage } from "./ChatContainer"
 
 type MessageRowProps = {
-    message: Message
+    message: ChatMessage
     isOwn: boolean
 }
 
 const MessageRow = ({ message, isOwn }: MessageRowProps) => {
-    const { sender, text } = message
+    const { author: sender, content: text } = message
 
     return (
         <div className={`flex flex-col gap-1 p-2 ${isOwn ? "items-end" : "items-start"}`}>

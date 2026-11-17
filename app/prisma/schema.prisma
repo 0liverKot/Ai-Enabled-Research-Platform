@@ -41,6 +41,7 @@ model User {
     memberships         GroupMember[]
     invitationsReceived GroupInvitation[] @relation("InvitationRecipient")
     invitationsSent     GroupInvitation[] @relation("InvitationSender")
+    messages Message[]
 
     @@unique([email])
     @@map("user")
@@ -138,8 +139,22 @@ model Channel {
     name String 
     main Boolean @default(false)
     groupId String 
+    messages Message[]
 
     group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
     @@index([groupId])
+}
+
+model Message {
+    id String @id @default(cuid())
+    content String
+    createdAt DateTime @default(now())
+    channelId String
+    authorId String
+
+    channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+    author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+    @@index([channelId, createdAt])
 }

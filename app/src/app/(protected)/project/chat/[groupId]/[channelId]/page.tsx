@@ -23,7 +23,7 @@ const ChatRoomPage = async ({ params }: ChatRoomPageProps) => {
             <div className="border-b p-4">
                 <span className="text-2xl">{`# ${channel.name}`}</span>
             </div>
-            <ChatContainer user={{ id, name, image: image ?? null }}/>
+            <ChatContainer user={{ id, name, image: image ?? null }} channelId={channelId}/>
         </div>
     );
 };
