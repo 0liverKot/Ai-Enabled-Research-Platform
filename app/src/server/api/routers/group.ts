@@ -26,6 +26,16 @@ export const groupRouter = createTRPCRouter({
         }),
     ),
 
+    get: protectedProcedure
+        .input(z.object({ groupId: z.string() }))
+        .query(async ({ ctx, input }) => {
+            await requireMember(ctx.db, input.groupId, ctx.session.user.id)
+            return ctx.db.group.findUnique({
+                where: { id: input.groupId },
+                select: { id: true, name: true, description: true },
+            })
+        }),
+
     members: protectedProcedure
         .input(z.object({ groupId: z.string() }))
         .query(async ({ ctx, input }) => {

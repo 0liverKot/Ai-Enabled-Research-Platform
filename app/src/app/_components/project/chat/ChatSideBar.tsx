@@ -1,53 +1,79 @@
+import type { RouterOutputs } from "~/trpc/react";
 import ChatBarOption from "./ChatBarOption";
 import ExpandableList from "./ExpandableList";
 
+type SideBarGroup = NonNullable<RouterOutputs["group"]["get"]>;
+type SideBarChannel = RouterOutputs["channel"]["list"][number];
+type SideBarMember = RouterOutputs["group"]["members"][number]["user"];
+
 type ChatSideBarProps = {
-    groupId: string
-}
+    group: SideBarGroup;
+    channels: SideBarChannel[];
+    members: SideBarMember[];
+};
 
-const ChatSideBar = ({groupId}: ChatSideBarProps) => {
-    const channelChildrenLabels = ["channel 1", "channel 2", "channel 3"];
-    const directMessageChildrenLabels = ["User 1", "User 2", "User 3"];
-    const agentChildrenLabels = ["Agent 1", "Agent 2"];
+// placeholders until agents exist
+const PLACEHOLDER_AGENTS = ["Research Assistant", "Literature Reviewer"];
 
+const ChatSideBar = ({ group, channels, members }: ChatSideBarProps) => {
     return (
-        <>
-            <div className="bg-primary-secondary flex min-h-screen w-1/7 flex-col border p-4 pt-20 pb-20">
-                <span className="text-2xl">Group Name</span>
-                <ExpandableList label="Channels" className="mt-20">
-                    {channelChildrenLabels.map((label) => {
-                        return (
-                            <ChatBarOption
-                                key={`channel-${label}`}
-                                label={label}
-                            />
-                        );
-                    })}
+        <aside className="bg-primary-secondary flex h-full w-64 shrink-0 flex-col border-r">
+            <header className="border-b p-4">
+                <h2 className="truncate text-xl font-semibold">{group.name}</h2>
+                {group.description && (
+                    <p className="text-text-muted mt-1 line-clamp-2 text-sm">{group.description}</p>
+                )}
+            </header>
+
+            <nav className="scrollbar-none flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-3">
+                <ExpandableList label="Channels">
+                    {channels.map((channel) => (
+                        <ChatBarOption
+                            key={channel.id}
+                            label={channel.name}
+                            leading="#"
+                            href={`/project/chat/${group.id}/${channel.id}`}
+                        />
+                    ))}
                 </ExpandableList>
 
-                <ExpandableList label="Direct Messages" className="mt-20">
-                    {directMessageChildrenLabels.map((label) => {
-                        return (
+                <ExpandableList label="Direct Messages">
+                    {members.length > 0 ? (
+                        members.map((member) => (
                             <ChatBarOption
-                                key={`channel-${label}`}
-                                label={label}
+                                key={member.id}
+                                label={member.name}
+                                leading={
+                                    <img
+                                        src={member.image ?? "/images/user.png"}
+                                        alt=""
+                                        className="h-6 w-6 rounded-full object-cover"
+                                    />
+                                }
                             />
-                        );
-                    })}
+                        ))
+                    ) : (
+                        <span className="text-text-muted px-2 text-sm">No one else is here yet</span>
+                    )}
                 </ExpandableList>
 
-                <ExpandableList label="Agents" className="mt-20">
-                    {agentChildrenLabels.map((label) => {
-                        return (
-                            <ChatBarOption
-                                key={`channel-${label}`}
-                                label={label}
-                            />
-                        );
-                    })}
+                <ExpandableList label="Agents">
+                    {PLACEHOLDER_AGENTS.map((agent) => (
+                        <ChatBarOption
+                            key={agent}
+                            label={agent}
+                            leading={
+                                <img
+                                    src="/images/chat-bubble.png"
+                                    alt=""
+                                    className="h-4 w-4 object-contain opacity-60"
+                                />
+                            }
+                        />
+                    ))}
                 </ExpandableList>
-            </div>
-        </>
+            </nav>
+        </aside>
     );
 };
 
