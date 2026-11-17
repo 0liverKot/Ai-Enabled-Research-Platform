@@ -200,7 +200,10 @@ exports.Prisma.ChannelScalarFieldEnum = {
   id: 'id',
   name: 'name',
   main: 'main',
-  groupId: 'groupId'
+  groupId: 'groupId',
+  isDM: 'isDM',
+  userOneId: 'userOneId',
+  userTwoId: 'userTwoId'
 };
 
 exports.Prisma.MessageScalarFieldEnum = {

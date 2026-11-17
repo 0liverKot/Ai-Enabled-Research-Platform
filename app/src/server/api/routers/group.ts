@@ -2,8 +2,8 @@ import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { Prisma } from "generated/prisma";
-import { getMembership, requireAdmin, requireMember } from "../groupHelpers";
-import { createChannel } from "../channelHelpers";
+import { getMembership, getMembersIds, requireAdmin, requireMember } from "../groupHelpers";
+import { createChannel, createDM } from "../channelHelpers";
 
 export const groupRouter = createTRPCRouter({
     create: protectedProcedure
@@ -78,26 +78,31 @@ export const groupRouter = createTRPCRouter({
     
     accept: protectedProcedure
         .input(z.object({ inviteId: z.string() }))
-        .mutation(async ({ ctx, input }) => {
-            const invite = await ctx.db.groupInvitation.findFirst({
-                where: { id: input.inviteId, inviteeId: ctx.session.user.id }
-            })
-            
-            if (!invite) {
-                throw new TRPCError({ code: "NOT_FOUND", message: "Invitation not found" });
-            }
-            
-            await ctx.db.$transaction([
-                ctx.db.groupMember.upsert({
+        .mutation(({ ctx, input }) => 
+            ctx.db.$transaction(async (tx) => {
+                const invite = await tx.groupInvitation.findFirst({
+                    where: { id: input.inviteId, inviteeId: ctx.session.user.id }
+                })
+                
+                if (!invite) {
+                    throw new TRPCError({ code: "NOT_FOUND", message: "Invitation not found" });
+                    }
+                
+                await tx.groupMember.upsert({
                     where: { groupId_userId: { groupId: invite.groupId, userId: ctx.session.user.id } },
                     create: { groupId: invite.groupId, userId: ctx.session.user.id },
                     update: {},
-                }),
-                ctx.db.groupInvitation.deleteMany({ where: { id: invite.id } })
-            ])
-            
-            return { groupId: invite.groupId}
-    }),
+                })
+                await tx.groupInvitation.deleteMany({ where: { id: invite.id } })
+
+                const members = await getMembersIds(tx, invite.groupId, ctx.session.user.id)
+
+                for (const member of members) {
+                    await createDM(tx, invite.groupId, ctx.session.user.id, member)
+                }
+
+                return { groupId: invite.groupId}
+            })),
 
     reject: protectedProcedure
         .input(z.object({ inviteId: z.string() }))

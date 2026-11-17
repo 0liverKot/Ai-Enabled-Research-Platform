@@ -1,5 +1,7 @@
 import { TRPCError } from "@trpc/server";
-import type { PrismaClient } from "generated/prisma";
+import type { Prisma, PrismaClient } from "generated/prisma";
+
+type Db = PrismaClient | Prisma.TransactionClient
 
 export const getMembership = (db: PrismaClient, groupId: string, userId: string) =>
     db.groupMember.findUnique({ where: { groupId_userId: { groupId, userId } } });
@@ -21,3 +23,12 @@ export const requireAdmin = async (db: PrismaClient, groupId: string, userId: st
     }
     return membership;
 };
+
+export const getMembersIds = async (db: Db, groupId: string, userId: string) => {
+    const members = await db.groupMember.findMany({
+        where: { groupId: groupId, userId: { not: userId } },
+        select: { userId: true }
+    })
+
+    return members.map((member) => member.userId)
+}

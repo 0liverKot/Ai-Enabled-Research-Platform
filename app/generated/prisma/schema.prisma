@@ -42,6 +42,8 @@ model User {
   invitationsReceived GroupInvitation[] @relation("InvitationRecipient")
   invitationsSent     GroupInvitation[] @relation("InvitationSender")
   messages            Message[]
+  dmsAsUserOne        Channel[]         @relation("DMUserOne")
+  dmsAsUserTwo        Channel[]         @relation("DMUserTwo")
 
   @@unique([email])
   @@map("user")
@@ -139,11 +141,20 @@ model Channel {
   name     String
   main     Boolean   @default(false)
   groupId  String
+  isDM     Boolean   @default(false)
   messages Message[]
 
-  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  // for direct messages
+  userOneId String?
+  userTwoId String?
 
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userOne User? @relation("DMUserOne", fields: [userOneId], references: [id], onDelete: Cascade)
+  userTwo User? @relation("DMUserTwo", fields: [userTwoId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userOneId, userTwoId])
   @@index([groupId])
+  @@index([userTwoId])
 }
 
 model Message {

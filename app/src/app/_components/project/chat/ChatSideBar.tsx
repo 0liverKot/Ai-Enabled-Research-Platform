@@ -4,18 +4,18 @@ import ExpandableList from "./ExpandableList";
 
 type SideBarGroup = NonNullable<RouterOutputs["group"]["get"]>;
 type SideBarChannel = RouterOutputs["channel"]["list"][number];
-type SideBarMember = RouterOutputs["group"]["members"][number]["user"];
+type SideBarDM = RouterOutputs["channel"]["dms"][number];
 
 type ChatSideBarProps = {
     group: SideBarGroup;
     channels: SideBarChannel[];
-    members: SideBarMember[];
+    dms: SideBarDM[];
 };
 
 // placeholders until agents exist
 const PLACEHOLDER_AGENTS = ["Research Assistant", "Literature Reviewer"];
 
-const ChatSideBar = ({ group, channels, members }: ChatSideBarProps) => {
+const ChatSideBar = ({ group, channels, dms }: ChatSideBarProps) => {
     return (
         <aside className="bg-primary-secondary flex h-full w-64 shrink-0 flex-col border-r">
             <header className="border-b p-4">
@@ -38,14 +38,15 @@ const ChatSideBar = ({ group, channels, members }: ChatSideBarProps) => {
                 </ExpandableList>
 
                 <ExpandableList label="Direct Messages">
-                    {members.length > 0 ? (
-                        members.map((member) => (
+                    {dms.length > 0 ? (
+                        dms.map((dm) => (
                             <ChatBarOption
-                                key={member.id}
-                                label={member.name}
+                                key={dm.id}
+                                label={dm.otherUser.name}
+                                href={`/project/chat/${group.id}/${dm.id}`}
                                 leading={
                                     <img
-                                        src={member.image ?? "/images/user.png"}
+                                        src={dm.otherUser.image ?? "/images/user.png"}
                                         alt=""
                                         className="h-6 w-6 rounded-full object-cover"
                                     />
